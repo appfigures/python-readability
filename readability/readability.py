@@ -91,7 +91,7 @@ class Document:
         :param xpath: If set to True, adds x="..." attribute to each HTML node,
         containing xpath path pointing to original document path (allows to
         reconstruct selected summary in original document).
-        
+
         Example:
             positive_keywords=["news-item", "block"]
             negative_keywords=["mysidebar", "related", "ads"]
@@ -278,7 +278,7 @@ class Document:
             return None
 
         sorted_candidates = sorted(
-            candidates.values(), 
+            candidates.values(),
             key=lambda x: x['content_score'],
             reverse=True
         )
@@ -448,9 +448,11 @@ class Document:
 
     def sanitize(self, node, candidates):
         MIN_LEN = self.min_text_length
-        for header in self.tags(node, "h1", "h2", "h3", "h4", "h5", "h6"):
-            if self.class_weight(header) < 0 or self.get_link_density(header) > 0.33:
-                header.drop_tree()
+
+        # Just don't strip out headers
+        # for header in self.tags(node, "h1", "h2", "h3", "h4", "h5", "h6"):
+        #     if self.class_weight(header) < 0 or self.get_link_density(header) > 0.33:
+        #         header.drop_tree()
 
         for elem in self.tags(node, "form", "textarea"):
             elem.drop_tree()
